@@ -22,7 +22,13 @@ public class Spawner : MonoBehaviour
 
     private void CreateRunner()
     {
-        Vector3 pos = new Vector3(0, -5, 0);
+        Vector3 pos = GetSpriteStartingPosition();
         GameObject runnerObject = Instantiate(runner, pos, Quaternion.identity);
+    }
+
+    public Vector3 GetSpriteStartingPosition()
+    {
+        Vector3 pos = new Vector3(0, -5, 0);
+        return pos;
     }
 }
