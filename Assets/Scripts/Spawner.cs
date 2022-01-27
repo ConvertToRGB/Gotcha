@@ -8,7 +8,11 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     GameObject runner;
     float elapsedTime;
-    float counter = 1f;
+    int counter = 1;
+    [SerializeField]
+    float delay = 3f;
+    [SerializeField]
+    float spawnSpeed = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -19,11 +23,9 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        elapsedTime += Time.time;
-        Debug.Log("Current Elapsed Time: " + elapsedTime);
+        elapsedTime += Time.deltaTime;
+        Debug.Log(Math.Round(elapsedTime));
         CreateRunnerInUpdate();
-        Debug.Log(Math.Round(elapsedTime/100, 0));
-
     }
 
     private void CreateRunner()
@@ -34,29 +36,15 @@ public class Spawner : MonoBehaviour
 
     private void CreateRunnerInUpdate()
     {
-        float whenToStart = Mathf.Round(elapsedTime / 100);
-        double remain = Math.Round(elapsedTime / 100, 0) - Convert.ToDouble((100f*counter));
-        Debug.Log("REMAIN: " + remain + "ELAPSED TIME: " + elapsedTime);
+        float elapsedTimeRound = Mathf.Round(elapsedTime);
+        float remain = (float)Math.Round(elapsedTimeRound - (delay * (counter*spawnSpeed)));
         
-        if (whenToStart > 5f)
+        if (remain > 0)
         {
-            if (remain > 0f)
-            {
-                counter += 1f;
-                CreateRunner();
-                elapsedTime = 0f;
-                //StartCoroutine(CrtRunner());
-                Debug.Log("ELAPSED TIME: " + elapsedTime);
-                Debug.Log("Остаток: " + remain);
-            }
-            
+            counter += 1;
+            CreateRunner();
+            elapsedTime = 0f;
         }
-    }
-
-    IEnumerator CrtRunner()
-    {
-        CreateRunner();
-        yield return new WaitForSeconds(5000f);
     }
 
     public Vector3 GetSpriteStartingPosition()

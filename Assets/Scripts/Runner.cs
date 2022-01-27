@@ -5,6 +5,8 @@ using UnityEngine;
 public class Runner : MonoBehaviour
 {
     float speed = 5f;
+    [SerializeField]
+    float speedMult = 10f;
     float rotSpeed = 1f;
     float firstRunSpeed = 3f;
     bool firstRun = true;
@@ -80,7 +82,9 @@ public class Runner : MonoBehaviour
     private void Move(Vector3 startPos, Vector3 targetPos)
     {
         inProcess = true;
-        //if (Vector3.Distance(transform.position, targetPos) < 0.3f)
+        float distance = Vector3.Distance(startPos, targetPos);
+        desiredDuration = (distance / speed)*speedMult;
+
         if (transform.position != targetPos)
         {
             elapsedTime += Time.deltaTime * speed;
